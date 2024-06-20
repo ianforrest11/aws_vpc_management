@@ -1,0 +1,62 @@
+# terraform_workflow.yml
+
+name: Terraform Workflow
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+permissions:
+  id-token: write   # Required for requesting the JWT
+  contents: read    # Required for actions/checkout
+
+jobs:
+  terraform:
+    name: Run Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Configure SSH for Git operations
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+      
+      # Configure AWS credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::128333337075:role/GitHubActionRunner
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-1
+
+      # Hello from AWS: WhoAmI
+      - name: Sts GetCallerIdentity
+        run: |
+          aws sts get-caller-identity
+          
+      # Execute Terraform vpc_management commands
+      - name: Execute Terraform vpc_management
+        run: |
+          cd vpc_management/terraform
+          echo "Entering directory vpc_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/terraform.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
