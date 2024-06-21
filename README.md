@@ -1,4 +1,4 @@
-# aws_vpc_management
+# aws_vpc_management (in progress)
 repository for managing AWS VPCs and related resources for portfolio AWS account
 
 # modules included:
