@@ -78,3 +78,21 @@ jobs:
           
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
+
+      # Execute Terraform igw_management commands
+      - name: Execute Terraform igw_management
+        run: |
+          cd igw_management/terraform
+          echo "Entering directory igw_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/terraform.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
