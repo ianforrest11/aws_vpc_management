@@ -96,3 +96,21 @@ jobs:
           
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
+
+      # Execute Terraform route_table_management commands
+      - name: Execute Terraform route_table_management
+        run: |
+          cd route_table_management/terraform
+          echo "Entering directory route_table_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/terraform.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
