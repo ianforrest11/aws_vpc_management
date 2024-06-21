@@ -61,11 +61,11 @@ jobs:
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
 
-      # Execute Terraform vpc_subnet commands
-      - name: Execute Terraform vpc_subnet
+      # Execute Terraform subnet_management commands
+      - name: Execute Terraform subnet_management
         run: |
-          cd vpc_subnet/terraform
-          echo "Entering directory vpc_subnet/terraform"
+          cd subnet_management/terraform
+          echo "Entering directory subnet_management/terraform"
           
           # Initialize Terraform
           terraform init
