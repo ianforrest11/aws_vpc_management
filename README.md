@@ -3,6 +3,7 @@ repository for managing AWS VPCs and related resources for portfolio AWS account
 
 # modules included (so far):
 - igw management
+- route table management (in progress)
 - subnet management
 - vpc management
 
