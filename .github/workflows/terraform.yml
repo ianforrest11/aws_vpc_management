@@ -79,11 +79,11 @@ jobs:
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
 
-      # Execute Terraform igw_management commands
-      - name: Execute Terraform igw_management
+      # Execute Terraform route_table_management commands
+      - name: Execute Terraform route_table_management
         run: |
-          cd igw_management/terraform
-          echo "Entering directory igw_management/terraform"
+          cd route_table_management/terraform
+          echo "Entering directory route_table_management/terraform"
           
           # Initialize Terraform
           terraform init
@@ -97,11 +97,29 @@ jobs:
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
 
-      # Execute Terraform route_table_management commands
-      - name: Execute Terraform route_table_management
+      # Execute Terraform route_table_route_management commands
+      - name: Execute Terraform route_table_route_management
         run: |
-          cd route_table_management/terraform
-          echo "Entering directory route_table_management/terraform"
+          cd route_table_route_management/terraform
+          echo "Entering directory route_table_route_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/terraform.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
+
+      # Execute Terraform igw_management commands
+      - name: Execute Terraform igw_management
+        run: |
+          cd igw_management/terraform
+          echo "Entering directory igw_management/terraform"
           
           # Initialize Terraform
           terraform init
