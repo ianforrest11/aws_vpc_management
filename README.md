@@ -1,7 +1,7 @@
 # aws_vpc_management
 repository for managing AWS VPCs and related resources for portfolio AWS account
 
-# modules included (so far):
+# modules included:
 - eip management
 - igw management
 - nat gateway management
