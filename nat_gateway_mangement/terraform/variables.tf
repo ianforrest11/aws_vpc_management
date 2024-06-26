@@ -1,0 +1,1 @@
+variable "default_vpc_nat_gateway_name" {}

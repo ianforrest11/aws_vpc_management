@@ -1,0 +1,1 @@
+default_vpc_nat_gateway_name     = "default_vpc_nat_gateway"

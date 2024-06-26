@@ -132,3 +132,21 @@ jobs:
           
           # Apply Terraform changes (auto-approve for automation)
           terraform apply -auto-approve -var-file=../variables/terraform.tfvars
+
+      # Execute Terraform nat_gateway_management commands
+      - name: Execute Terraform nat_gateway_management
+        run: |
+          cd nat_gateway_management/terraform
+          echo "Entering directory nat_gateway_management/terraform"
+          
+          # Initialize Terraform
+          terraform init
+
+          # Validate Terraform configuration
+          terraform validate
+
+          # Plan Terraform changes
+          terraform plan -var-file=../variables/terraform.tfvars
+          
+          # Apply Terraform changes (auto-approve for automation)
+          terraform apply -auto-approve -var-file=../variables/terraform.tfvars
