@@ -1,4 +1,4 @@
-name: Terraform Init, Validate, & Plan Workflow
+name: Terraform Apply Workflow
 
 on:
   workflow_dispatch:  # Allow manual trigger
