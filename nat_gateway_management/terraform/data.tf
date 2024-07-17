@@ -15,9 +15,17 @@ data "aws_subnet" "default_vpc_public_subnet_2" {
 }
 
 # data block to get eip id for use in creating other assets
-data "aws_eip" "default_vpc_eip" {
+data "aws_eip" "default_vpc_public_subnet_1_eip" {
   filter {
     name   = "tag:Name"
-    values = ["default_vpc_eip"]
+    values = ["default_vpc_public_subnet_1_eip"]
+  }
+}
+
+# data block to get eip id for use in creating other assets
+data "aws_eip" "default_vpc_public_subnet_2_eip" {
+  filter {
+    name   = "tag:Name"
+    values = ["default_vpc_public_subnet_2_eip"]
   }
 }
