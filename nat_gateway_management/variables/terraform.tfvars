@@ -1,1 +1,2 @@
-default_vpc_nat_gateway_name     = "default_vpc_nat_gateway"
+default_vpc_nat_gateway_public_subnet_1_name = "default_vpc_nat_gateway_public_subnet_1"
+default_vpc_nat_gateway_public_subnet_2_name = "default_vpc_nat_gateway_public_subnet_2"
