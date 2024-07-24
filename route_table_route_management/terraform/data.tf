@@ -38,19 +38,11 @@ data "aws_route_table" "default_vpc_private_route_table_1" {
   }
 }
 
-# data block to get private route table id for use in creating other assets
-data "aws_route_table" "default_vpc_private_route_table_2" {
-  filter {
-    name   = "tag:Name"
-    values = ["default_vpc_private_route_table_2"]
-  }
-}
-
 # data block to get public route table id for use in creating other assets
-data "aws_route_table" "default_vpc_public_route_table" {
+data "aws_route_table" "default_vpc_public_route_table_1" {
   filter {
     name   = "tag:Name"
-    values = ["default_vpc_public_route_table"]
+    values = ["default_vpc_public_route_table_1"]
   }
 }
 
