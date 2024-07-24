@@ -1,129 +1,234 @@
-name: Terraform Validate & Plan Workflow
+name: Terraform Init, Validate, & Plan Workflow
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to the main branch
 
 permissions:
-  id-token: write
-  contents: read
+  id-token: write   # Required for requesting the JWT
+  contents: read    # Required for actions/checkout
 
 jobs:
-  terraform-validate-plan-vpc-vpc:
-    name: Validate and Plan Terraform vpc_management
+  terraform-init-plan-vpc-vpc:
+    name: Init and Plan Terraform vpc_management
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: vpc_management
-      - name: Validate and Plan Terraform vpc_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform vpc_management
         run: |
           cd vpc_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-subnet:
-    name: Validate and Plan Terraform subnet_management
-    needs: terraform-validate-plan-vpc-vpc
+  terraform-init-plan-vpc-subnet:
+    name: Init and Plan Terraform subnet_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-vpc
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: subnet_management
-      - name: Validate and Plan Terraform subnet_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform subnet_management
         run: |
           cd subnet_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-igw:
-    name: Validate and Plan Terraform igw_management
-    needs: terraform-validate-plan-vpc-subnet
+  terraform-init-plan-vpc-igw:
+    name: Init and Plan Terraform igw_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-subnet
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: igw_management
-      - name: Validate and Plan Terraform igw_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform igw_management
         run: |
           cd igw_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-eip:
-    name: Validate and Plan Terraform eip_management
-    needs: terraform-validate-plan-vpc-igw
+  terraform-init-plan-vpc-eip:
+    name: Init and Plan Terraform eip_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-igw
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: eip_management
-      - name: Validate and Plan Terraform eip_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform eip_management
         run: |
           cd eip_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-nat-gateway:
-    name: Validate and Plan Terraform nat_gateway_management
-    needs: terraform-validate-plan-vpc-eip
+  terraform-init-plan-vpc-nat-gateway:
+    name: Init and Plan Terraform nat_gateway_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-eip
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: nat_gateway_management
-      - name: Validate and Plan Terraform nat_gateway_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform nat_gateway_management
         run: |
           cd nat_gateway_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-route-table:
-    name: Validate and Plan Terraform route_table_management
-    needs: terraform-validate-plan-vpc-nat-gateway
+  terraform-init-plan-vpc-route-table:
+    name: Init and Plan Terraform route_table_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-nat-gateway
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: route_table_management
-      - name: Validate and Plan Terraform route_table_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform route_table_management
         run: |
           cd route_table_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
 
-  terraform-validate-plan-vpc-route-table-route:
-    name: Validate and Plan Terraform route_table_route_management
-    needs: terraform-validate-plan-vpc-route-table
+  terraform-init-plan-vpc-route-table-route:
+    name: Init and Plan Terraform route_table_route_management
     runs-on: ubuntu-latest
+    needs: terraform-init-plan-vpc-route-table
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Common Steps
-        uses: ./.github/actions/common-steps
+        uses: actions/checkout@v2
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: route_table_route_management
-      - name: Validate and Plan Terraform route_table_route_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Init and Plan Terraform route_table_route_management
         run: |
           cd route_table_route_management/terraform
+          terraform init
           terraform validate
           terraform plan -var-file=../variables/terraform.tfvars
