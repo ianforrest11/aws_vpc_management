@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  common-steps:
+  common:
     runs-on: ubuntu-latest
     steps:
       - name: Configure SSH

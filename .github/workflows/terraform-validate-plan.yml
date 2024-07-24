@@ -12,14 +12,12 @@ permissions:
 jobs:
   terraform-validate-plan-vpc-vpc:
     name: Validate and Plan Terraform vpc_management
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: vpc_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: vpc_management
       - name: Validate and Plan Terraform vpc_management
         run: |
           cd vpc_management/terraform
@@ -29,14 +27,12 @@ jobs:
   terraform-validate-plan-vpc-subnet:
     name: Validate and Plan Terraform subnet_management
     needs: terraform-validate-plan-vpc-vpc
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: subnet_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: subnet_management
       - name: Validate and Plan Terraform subnet_management
         run: |
           cd subnet_management/terraform
@@ -46,14 +42,12 @@ jobs:
   terraform-validate-plan-vpc-igw:
     name: Validate and Plan Terraform igw_management
     needs: terraform-validate-plan-vpc-subnet
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: igw_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: igw_management
       - name: Validate and Plan Terraform igw_management
         run: |
           cd igw_management/terraform
@@ -63,14 +57,12 @@ jobs:
   terraform-validate-plan-vpc-eip:
     name: Validate and Plan Terraform eip_management
     needs: terraform-validate-plan-vpc-igw
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: eip_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: eip_management
       - name: Validate and Plan Terraform eip_management
         run: |
           cd eip_management/terraform
@@ -80,14 +72,12 @@ jobs:
   terraform-validate-plan-vpc-nat-gateway:
     name: Validate and Plan Terraform nat_gateway_management
     needs: terraform-validate-plan-vpc-eip
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: nat_gateway_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: nat_gateway_management
       - name: Validate and Plan Terraform nat_gateway_management
         run: |
           cd nat_gateway_management/terraform
@@ -97,14 +87,12 @@ jobs:
   terraform-validate-plan-vpc-route-table:
     name: Validate and Plan Terraform route_table_management
     needs: terraform-validate-plan-vpc-nat-gateway
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: route_table_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: route_table_management
       - name: Validate and Plan Terraform route_table_management
         run: |
           cd route_table_management/terraform
@@ -114,14 +102,12 @@ jobs:
   terraform-validate-plan-vpc-route-table-route:
     name: Validate and Plan Terraform route_table_route_management
     needs: terraform-validate-plan-vpc-route-table
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/common-steps.yml
+    with:
+      directory: route_table_route_management
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
-        with:
-          directory: route_table_route_management
       - name: Validate and Plan Terraform route_table_route_management
         run: |
           cd route_table_route_management/terraform
