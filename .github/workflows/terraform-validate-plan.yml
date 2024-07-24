@@ -14,6 +14,8 @@ jobs:
     name: Validate and Plan Terraform vpc_management
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -29,6 +31,8 @@ jobs:
     needs: terraform-validate-plan-vpc-vpc
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -44,6 +48,8 @@ jobs:
     needs: terraform-validate-plan-vpc-subnet
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -59,6 +65,8 @@ jobs:
     needs: terraform-validate-plan-vpc-igw
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -74,6 +82,8 @@ jobs:
     needs: terraform-validate-plan-vpc-eip
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -89,6 +99,8 @@ jobs:
     needs: terraform-validate-plan-vpc-nat-gateway
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
@@ -104,6 +116,8 @@ jobs:
     needs: terraform-validate-plan-vpc-route-table
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
