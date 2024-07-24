@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: vpc_management
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: subnet_management
@@ -46,7 +46,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: igw_management
@@ -62,7 +62,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: eip_management
@@ -78,7 +78,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: nat_gateway_management
@@ -94,7 +94,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: route_table_management
@@ -110,7 +110,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Common Steps
+      - name: Call Common Steps
         uses: ./.github/workflows/common-steps.yml
         with:
           directory: route_table_route_management
