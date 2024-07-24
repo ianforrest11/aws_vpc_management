@@ -14,107 +14,212 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: route_table_route_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform route_table_route_management
         run: |
           cd route_table_route_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-route-table:
     name: Destroy Terraform route_table_management
-    needs: terraform-destroy-vpc-route-table-route
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-route-table-route
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: route_table_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform route_table_management
         run: |
           cd route_table_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-nat-gateway:
     name: Destroy Terraform nat_gateway_management
-    needs: terraform-destroy-vpc-route-table
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-route-table
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: nat_gateway_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform nat_gateway_management
         run: |
           cd nat_gateway_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-eip:
     name: Destroy Terraform eip_management
-    needs: terraform-destroy-vpc-nat-gateway
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-nat-gateway
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: eip_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform eip_management
         run: |
           cd eip_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-igw:
     name: Destroy Terraform igw_management
-    needs: terraform-destroy-vpc-eip
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-eip
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: igw_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform igw_management
         run: |
           cd igw_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-subnet:
     name: Destroy Terraform subnet_management
-    needs: terraform-destroy-vpc-igw
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-igw
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: subnet_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform subnet_management
         run: |
           cd subnet_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
 
   terraform-destroy-vpc-vpc:
     name: Destroy Terraform vpc_management
-    needs: terraform-destroy-vpc-subnet
     runs-on: ubuntu-latest
+    needs: terraform-destroy-vpc-subnet
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Call Common Steps
-        uses: ./.github/workflows/common-steps.yml
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          directory: vpc_management
+          role-to-assume: ${{ secrets.RUNNER_ROLE_ARN }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Destroy Terraform vpc_management
         run: |
           cd vpc_management/terraform
+          terraform init
           terraform destroy -auto-approve -var-file=../variables/terraform.tfvars
